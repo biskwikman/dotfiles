@@ -32,7 +32,7 @@ let &t_EI = "\<esc>[2 q"
 " LINTING ---------------------------------------------------------------- {{{
 
 let g:ale_linters = {
-\    'tex': ['texlab'],
+\    'tex': ['chktex','cspell','lacheck','texlab'],
 \} 
 
 " }}}
@@ -41,9 +41,12 @@ let g:ale_linters = {
 " PLUGINS ---------------------------------------------------------------- {{{
 call plug#begin('~/.vim/plugged')
 
-    Plug 'dense-analysis/ale'
+    Plug 'dense-analysis/ale',
+    Plug 'lervag/vimtex'
 
 call plug#end()
+
+let g:vimtex_view_method = 'zathura'
 
 " }}}
 
