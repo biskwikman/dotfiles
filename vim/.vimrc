@@ -61,6 +61,30 @@ map <leader>e :Lexplore<CR>
 map gn :bnext<CR>
 map gp :bprevious<CR>
 map gc :bd<CR>
+map <c-k> <c-w>k
+map <c-j> <c-w>j
+map <c-h> <c-w>h
+map <c-l> <c-w>l
+tnoremap jk <c-w>N
+
+" Terminal
+" map <leader>t :below term++rows=20<CR>
+map <leader>t :call TermToggle()<CR>
+
+function! TermToggle()
+    if term_list() == []
+        below term++rows=20
+    else
+        for termbuf in term_list()
+            let termwinbuf = bufwinnr(termbuf)
+            if termwinbuf == -1
+                execute "below" "20split" | execute "buffer" termbuf
+            else
+                execute termwinbuf "wincmd" "w" | :hide 
+            endif
+        endfor
+    endif
+endfunction
 
 
 " Map key chord `jk` to <Esc>.
@@ -70,7 +94,7 @@ function! JKescape(key)
 	if a:key=='j' | let g:esc_j_lasttime = reltimefloat(reltime()) | endif
 	if a:key=='k' | let g:esc_k_lasttime = reltimefloat(reltime()) | endif
 	let l:timediff = abs(g:esc_j_lasttime - g:esc_k_lasttime)
-	return (l:timediff <= 0.07 && l:timediff >=0.001) ? "\b\e" : a:key
+	return (l:timediff <= 0.08) ? "\b\e" : a:key
 endfunction
 inoremap <expr> j JKescape('j')
 inoremap <expr> k JKescape('k')
