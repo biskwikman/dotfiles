@@ -1,3 +1,4 @@
+vim9script
 set nocompatible
 colorscheme darkblue
 filetype on
@@ -23,39 +24,62 @@ set wildmenu
 set wildmode=list:longest
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
-" Status bar
-let &t_SI = "\<esc>[5 q"
-let &t_SR = "\<esc>[5 q"
-let &t_EI = "\<esc>[2 q"
+# Status bar
+&t_SI = "\<esc>[5 q"
+&t_SR = "\<esc>[5 q"
+&t_EI = "\<esc>[2 q"
 
 
-" LINTING ---------------------------------------------------------------- {{{
-
-let g:ale_linters = {
-\    'tex': ['chktex','cspell','lacheck','texlab'],
-\} 
-
-" }}}
+# LINTING ---------------------------------------------------------------- {{{
 
 
-" PLUGINS ---------------------------------------------------------------- {{{
-call plug#begin('~/.vim/plugged')
+# }}}
 
-    Plug 'dense-analysis/ale',
+
+# PLUGINS ---------------------------------------------------------------- {{{
+plug#begin('~/.vim/plugged')
+
+    Plug 'yegappan/lsp',
     Plug 'lervag/vimtex'
 
-call plug#end()
+plug#end()
 
-let g:vimtex_view_method = 'zathura'
+g:vimtex_view_method = 'zathura'
 
-" }}}
+# }}}
 
 
-" MAPPINGS --------------------------------------------------------------- {{{
+# LSP ----------------------------------------------------------------- {{{
+var lspOpts = {autoHighlightDiags: v:true}
+autocmd User LspSetup call LspOptionsSet(lspOpts)
 
-" Mappings code goes here.
+var lspServers = [
+    # Clang language server
+    {
+        name: 'clang',
+		filetype: ['c', 'cpp'],
+		path: '/usr/bin/clangd',
+		args: ['--background-index'],
+    },
+    # Julia language server
+	{
+        name: 'LanuageServer',
+		filetype: ['jl', 'julia'],
+        path: '/home/dan/.juliaup/bin/julia',
+		args: ['--project=/home/dan/.julia/environments/v1.11 -e "using LanguageServer; runserver()"'],
+    },
+]
+    
+autocmd User LspSetup call LspAddServer(lspServers)
 
-let mapleader = " "
+# }}}
+
+
+# MAPPINGS --------------------------------------------------------------- {{{
+
+# Mappings code goes here.
+
+g:mapleader = " "
 map <leader>h :noh<CR>
 map <leader>e :Lexplore<CR>
 map gn :bnext<CR>
@@ -65,18 +89,17 @@ map <c-k> <c-w>k
 map <c-j> <c-w>j
 map <c-h> <c-w>h
 map <c-l> <c-w>l
+inoremap jk <ESC>
 tnoremap jk <c-w>N
 
-" Terminal
-" map <leader>t :below term++rows=20<CR>
-map <leader>t :call TermToggle()<CR>
+# Terminal
 
-function! TermToggle()
+def TermToggle()
     if term_list() == []
         below term++rows=20
     else
         for termbuf in term_list()
-            let termwinbuf = bufwinnr(termbuf)
+             var termwinbuf = bufwinnr(termbuf)
             if termwinbuf == -1
                 execute "below" "20split" | execute "buffer" termbuf
             else
@@ -84,40 +107,29 @@ function! TermToggle()
             endif
         endfor
     endif
-endfunction
+enddef
+
+map <leader>t TermToggle()<CR>
+
+# }}}
 
 
-" Map key chord `jk` to <Esc>.
-let g:esc_j_lasttime = 0
-let g:esc_k_lasttime = 0
-function! JKescape(key)
-	if a:key=='j' | let g:esc_j_lasttime = reltimefloat(reltime()) | endif
-	if a:key=='k' | let g:esc_k_lasttime = reltimefloat(reltime()) | endif
-	let l:timediff = abs(g:esc_j_lasttime - g:esc_k_lasttime)
-	return (l:timediff <= 0.08) ? "\b\e" : a:key
-endfunction
-inoremap <expr> j JKescape('j')
-inoremap <expr> k JKescape('k')
+# VIMSCRIPT -------------------------------------------------------------- {{{
 
-" }}}
-
-
-" VIMSCRIPT -------------------------------------------------------------- {{{
-
-" This will enable code folding.
-" Use the marker method of folding.
+# This will enable code folding.
+# Use the marker method of folding.
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
-" More Vimscripts code goes here.
+# More Vimscripts code goes here.
 
-" }}}
+# }}}
 
 
-" STATUS LINE ------------------------------------------------------------ {{{
+# STATUS LINE ------------------------------------------------------------ {{{
 
-" Status bar code goes here.
+# Status bar code goes here.
 
-" }}}
+# }}}
