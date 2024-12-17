@@ -40,7 +40,8 @@ set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 plug#begin('~/.vim/plugged')
 
     Plug 'yegappan/lsp',
-    Plug 'lervag/vimtex'
+    Plug 'lervag/vimtex',
+    Plug 'JuliaEditorSupport/julia-vim',
 
 plug#end()
 
@@ -62,6 +63,13 @@ var lspServers = [
 		args: ['--background-index'],
     },
     # Julia language server
+	{
+        name: 'LanuageServer',
+		filetype: ['jl', 'julia'],
+        path: '/home/dan/.juliaup/bin/julia',
+		args: ['--project=/home/dan/.julia/environments/v1.11 -e "using LanguageServer; runserver()"'],
+    },
+    # Vim langauge server
 	{
         name: 'LanuageServer',
 		filetype: ['jl', 'julia'],
@@ -92,25 +100,6 @@ map <c-l> <c-w>l
 inoremap jk <ESC>
 tnoremap jk <c-w>N
 
-# Terminal
-
-def TermToggle()
-    if term_list() == []
-        below term++rows=20
-    else
-        for termbuf in term_list()
-             var termwinbuf = bufwinnr(termbuf)
-            if termwinbuf == -1
-                execute "below" "20split" | execute "buffer" termbuf
-            else
-                execute termwinbuf "wincmd" "w" | :hide 
-            endif
-        endfor
-    endif
-enddef
-
-map <leader>t TermToggle()<CR>
-
 # }}}
 
 
@@ -123,7 +112,24 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
-# More Vimscripts code goes here.
+# Terminal
+def g:TermToggle()
+    if term_list() == []
+        below term ++rows=20
+    else
+        for termbuf in term_list()
+            var termwinbuf = bufwinnr(termbuf)
+            if termwinbuf == -1
+                execute "below" ":20split" | execute "buffer" termbuf
+            else
+                execute ":"termwinbuf "wincmd" "w"
+                hide
+            endif
+        endfor
+    endif
+enddef
+map <leader>t :call TermToggle()<CR>
+
 
 # }}}
 
