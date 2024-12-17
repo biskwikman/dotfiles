@@ -78,6 +78,14 @@ var lspServers = [
 		path: '/home/dan/.juliaup/bin/julia',
         args: ['-e', 'using LanguageServer; server = LanguageServerInstance(stdin, stdout, "/home/dan/.julia/environments/v1.11"); server.runlinter = true; run(server);']
     },
+    # Vimscript language server
+    {
+        name: 'vim-language-server',
+		filetype: ['vim', 'vimrc'],
+		path: '/home/dan/.nvm/versions/node/v22.2.0/bin/vim-language-server',
+        args: ['--stdio'],
+        initializationOptions: {diagnostics: {enable: true}}
+    },
 ]
     
 autocmd User LspSetup call LspAddServer(lspServers)
