@@ -51,7 +51,10 @@ g:vimtex_view_method = 'zathura'
 
 
 # LSP ----------------------------------------------------------------- {{{
-var lspOpts = {autoHighlightDiags: v:true}
+var lspOpts = {
+    autoHighlight: v:true,
+    autoHighlightDiags: v:true,
+}
 autocmd User LspSetup call LspOptionsSet(lspOpts)
 
 var lspServers = [
@@ -62,19 +65,18 @@ var lspServers = [
 		path: '/usr/bin/clangd',
 		args: ['--background-index'],
     },
-    # Julia language server
-	{
-        name: 'LanuageServer',
-		filetype: ['jl', 'julia'],
-        path: '/home/dan/.juliaup/bin/julia',
-		args: ['--project=/home/dan/.julia/environments/v1.11 -e "using LanguageServer; runserver()"'],
+    # Texlab language server
+    {
+        name: 'TexLab',
+		filetype: ['tex', 'latex'],
+		path: '/usr/bin/texlab',
     },
-    # Vim langauge server
-	{
-        name: 'LanuageServer',
-		filetype: ['jl', 'julia'],
-        path: '/home/dan/.juliaup/bin/julia',
-		args: ['--project=/home/dan/.julia/environments/v1.11 -e "using LanguageServer; runserver()"'],
+    # Julia language server
+    {
+        name: 'LanguageServer',
+		filetype: ['jl'],
+		path: '/home/dan/.juliaup/bin/julia',
+        args: ['-e', 'using LanguageServer; server = LanguageServerInstance(stdin, stdout, "/home/dan/.julia/environments/v1.11"); server.runlinter = true; run(server);']
     },
 ]
     
