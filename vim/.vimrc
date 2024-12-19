@@ -5,10 +5,11 @@ filetype on
 filetype plugin on
 filetype indent on
 syntax on
-set cursorline
+# set cursorline
 set shiftwidth=4
-set tabstop=4
-set expandtab
+set tabstop=8
+set softtabstop=4
+set noexpandtab
 set nobackup
 set scrolloff=10
 set nowrap
@@ -42,7 +43,8 @@ plug#begin('~/.vim/plugged')
     Plug 'yegappan/lsp',
     Plug 'lervag/vimtex',
     Plug 'JuliaEditorSupport/julia-vim',
-
+    Plug 'Apeiros-46B/uiua.vim',
+    Plug 'tpope/vim-commentary',
 plug#end()
 
 g:vimtex_view_method = 'zathura'
@@ -84,6 +86,14 @@ var lspServers = [
 		filetype: ['vim', 'vimrc'],
 		path: '/home/dan/.nvm/versions/node/v22.2.0/bin/vim-language-server',
         args: ['--stdio'],
+        initializationOptions: {diagnostics: {enable: true}}
+    },
+    # uiua language server
+    {
+        name: 'uiua-language-server',
+		filetype: ['ua', 'uiua'],
+		path: '/home/dan/.cargo/bin/uiua',
+        args: ['lsp'],
         initializationOptions: {diagnostics: {enable: true}}
     },
 ]
@@ -139,7 +149,6 @@ def g:TermToggle()
     endif
 enddef
 map <leader>t :call TermToggle()<CR>
-
 
 # }}}
 
