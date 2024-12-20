@@ -45,6 +45,7 @@ plug#begin('~/.vim/plugged')
     Plug 'JuliaEditorSupport/julia-vim',
     Plug 'Apeiros-46B/uiua.vim',
     Plug 'tpope/vim-commentary',
+    Plug 'mlochbaum/BQN', {'rtp': 'editors/vim'},
 plug#end()
 
 g:vimtex_view_method = 'zathura'
@@ -56,6 +57,7 @@ g:vimtex_view_method = 'zathura'
 var lspOpts = {
     autoHighlight: v:true,
     autoHighlightDiags: v:true,
+    autoPopulateDiags: v:true,
 }
 autocmd User LspSetup call LspOptionsSet(lspOpts)
 
@@ -88,13 +90,19 @@ var lspServers = [
         args: ['--stdio'],
         initializationOptions: {diagnostics: {enable: true}}
     },
+    # Haskell language server
+    {
+        name: 'haskell-language-server',
+		filetype: ['hs', 'haskell', 'lhaskell'],
+		path: '/home/dan/.ghcup/bin/haskell-language-server-wrapper',
+        args: ['--lsp'],
+    },
     # uiua language server
     {
         name: 'uiua-language-server',
 		filetype: ['ua', 'uiua'],
 		path: '/home/dan/.cargo/bin/uiua',
         args: ['lsp'],
-        initializationOptions: {diagnostics: {enable: true}}
     },
 ]
     
@@ -119,6 +127,7 @@ map <c-h> <c-w>h
 map <c-l> <c-w>l
 inoremap jk <ESC>
 tnoremap jk <c-w>N
+nnoremap <leader>d :LspDiag current<CR>
 
 # }}}
 
