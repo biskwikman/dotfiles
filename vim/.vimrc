@@ -5,7 +5,6 @@ filetype on
 filetype plugin on
 filetype indent on
 syntax on
-# set cursorline
 set shiftwidth=4
 set tabstop=8
 set softtabstop=4
@@ -24,6 +23,7 @@ set history=1000
 set wildmenu
 set wildmode=list:longest
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
+hi Terminal ctermbg=black
 
 # Status bar
 &t_SI = "\<esc>[5 q"
@@ -86,7 +86,7 @@ var lspServers = [
     {
         name: 'vim-language-server',
 		filetype: ['vim', 'vimrc'],
-		path: '/home/dan/.nvm/versions/node/v22.2.0/bin/vim-language-server',
+		path: 'vim-language-server',
         args: ['--stdio'],
         initializationOptions: {diagnostics: {enable: true}}
     },
@@ -96,6 +96,14 @@ var lspServers = [
 		filetype: ['hs', 'haskell', 'lhaskell'],
 		path: '/home/dan/.ghcup/bin/haskell-language-server-wrapper',
         args: ['--lsp'],
+    },
+    # Rust Analyzer
+    {
+        name: 'rustlang',
+	filetype: ['rs', 'rust'],
+	path: 'rust-analyzer',
+        args: [],
+	syncInit: v:true,
     },
     # uiua language server
     {
