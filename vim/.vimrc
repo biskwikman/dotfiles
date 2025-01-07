@@ -5,6 +5,7 @@ filetype on
 filetype plugin on
 filetype indent on
 syntax on
+set omnifunc=syntaxcomplete#Complete
 set shiftwidth=4
 set tabstop=8
 set softtabstop=4
@@ -57,7 +58,7 @@ g:vimtex_view_method = 'zathura'
 var lspOpts = {
     autoHighlight: v:true,
     autoHighlightDiags: v:true,
-    autoPopulateDiags: v:true,
+    autoComplete: v:false,
 }
 autocmd User LspSetup call LspOptionsSet(lspOpts)
 
