@@ -25,6 +25,7 @@ set wildmenu
 set wildmode=list:longest
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 hi Terminal ctermbg=black
+hi MatchParen cterm=none ctermfg=blue ctermbg=92
 
 # Status bar
 &t_SI = "\<esc>[5 q"
